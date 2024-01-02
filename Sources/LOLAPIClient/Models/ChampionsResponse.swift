@@ -8,7 +8,7 @@
 import Foundation
 import Vapor
 
-typealias ChampionID = Int64
+public typealias ChampionID = Int64
 
 public struct ChampionsResponse: Content {
     public let type: String
@@ -23,7 +23,7 @@ public struct ChampionsResponse: Content {
         case data
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(String.self, forKey: .type)
         self.format = try container.decode(String.self, forKey: .format)
@@ -34,7 +34,7 @@ public struct ChampionsResponse: Content {
         }))
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.type, forKey: .type)
         try container.encode(self.format, forKey: .format)
@@ -46,7 +46,7 @@ public struct ChampionsResponse: Content {
     }
 }
 
-struct ChampionDTO: Content {
+public struct ChampionDTO: Content {
     public let version: String
     public let id: String
     public let key: ChampionID
@@ -94,7 +94,7 @@ struct ChampionDTO: Content {
         case stats
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.version = try container.decode(String.self, forKey: .version)
         self.id = try container.decode(String.self, forKey: .id)
@@ -110,7 +110,7 @@ struct ChampionDTO: Content {
         self.stats = try container.decode([String : Double].self, forKey: .stats)
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.version, forKey: .version)
         try container.encode(self.id, forKey: .id)
@@ -127,7 +127,7 @@ struct ChampionDTO: Content {
     }
 }
 
-struct Image: Content {
+public struct Image: Content {
     public let full: String
     public let sprite: String
     public let group: String
@@ -137,7 +137,7 @@ struct Image: Content {
     public let h: Int
 }
 
-struct Info: Content {
+public struct Info: Content {
     public let attack: Int
     public let defense: Int
     public let magic: Int

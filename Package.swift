@@ -23,7 +23,9 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "LOLAPIClient",
-            dependencies: ["vapor"]),
+            dependencies: [
+                .product(name: "Vapor", package: "vapor"),
+            ]),
         .testTarget(
             name: "LOLAPIClientTests",
             dependencies: ["LOLAPIClient"]),
