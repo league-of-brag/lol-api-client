@@ -28,6 +28,11 @@ let package = Package(
             ]),
         .testTarget(
             name: "LOLAPIClientTests",
-            dependencies: ["LOLAPIClient"]),
+            dependencies: [
+                "LOLAPIClient",
+                .product(name: "XCTVapor", package: "vapor"),
+                // Workaround for https://github.com/apple/swift-package-manager/issues/6940
+                .product(name: "Vapor", package: "vapor"),
+            ]),
     ]
 )
