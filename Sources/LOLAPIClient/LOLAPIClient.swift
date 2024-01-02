@@ -1,12 +1,10 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
 import Vapor
 
 public class LOLAPIClient {
     /// See: https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerName
     public static func fetchSummoner(serverRegion: ServerRegion,
-                       summonerName: String,
-                       request: Request) async throws -> SummonerDTO {
+                                     summonerName: String,
+                                     request: Request) async throws -> SummonerDTO {
         guard let riotToken = Environment.get("X-Riot-Token") else {
             throw Abort(.internalServerError)
         }
@@ -21,17 +19,16 @@ public class LOLAPIClient {
         guard response.status.isValid() else {
             throw Abort(response.status)
         }
-        
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
         let json = try response.content.decode(SummonerDTO.self, using: decoder)
         return json
     }
-
+    
     /// See: https://developer.riotgames.com/apis#champion-mastery-v4/GET_getAllChampionMasteriesByPUUID
     public static func fetchChampionMasteries(serverRegion: ServerRegion,
-                                puuid: String,
-                                request: Request) async throws -> [ChampionMasteryDTO] {
+                                              puuid: String,
+                                              request: Request) async throws -> [ChampionMasteryDTO] {
         guard let riotToken = Environment.get("X-Riot-Token") else {
             throw Abort(.internalServerError)
         }
@@ -51,12 +48,12 @@ public class LOLAPIClient {
         let json = try response.content.decode([ChampionMasteryDTO].self, using: decoder)
         return json
     }
-
+    
     /// See: https://developer.riotgames.com/apis#champion-mastery-v4/GET_getChampionMasteryByPUUID
     public static func fetchChampionMastery(serverRegion: ServerRegion,
-                              puuid: String,
-                              championId: ChampionID,
-                              request: Request) async throws -> ChampionMasteryDTO {
+                                            puuid: String,
+                                            championId: ChampionID,
+                                            request: Request) async throws -> ChampionMasteryDTO {
         guard let riotToken = Environment.get("X-Riot-Token") else {
             throw Abort(.internalServerError)
         }
@@ -76,7 +73,7 @@ public class LOLAPIClient {
         let json = try response.content.decode(ChampionMasteryDTO.self, using: decoder)
         return json
     }
-
+    
     public static func fetchChampions(request: Request) async throws -> ChampionsResponse {
         let requestURI: URI = "https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json"
         let response = try await request.client.get(requestURI)
