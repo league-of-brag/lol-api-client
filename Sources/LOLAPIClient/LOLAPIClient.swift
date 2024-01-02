@@ -4,7 +4,7 @@ import Vapor
 
 public class LOLAPIClient {
     /// See: https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerName
-    func fetchSummoner(serverRegion: ServerRegion,
+    public static func fetchSummoner(serverRegion: ServerRegion,
                        summonerName: String,
                        request: Request) async throws -> SummonerDTO {
         guard let riotToken = Environment.get("X-Riot-Token") else {
@@ -29,7 +29,7 @@ public class LOLAPIClient {
     }
 
     /// See: https://developer.riotgames.com/apis#champion-mastery-v4/GET_getAllChampionMasteriesByPUUID
-    func fetchChampionMasteries(serverRegion: ServerRegion,
+    public static func fetchChampionMasteries(serverRegion: ServerRegion,
                                 puuid: String,
                                 request: Request) async throws -> [ChampionMasteryDTO] {
         guard let riotToken = Environment.get("X-Riot-Token") else {
@@ -53,7 +53,7 @@ public class LOLAPIClient {
     }
 
     /// See: https://developer.riotgames.com/apis#champion-mastery-v4/GET_getChampionMasteryByPUUID
-    func fetchChampionMastery(serverRegion: ServerRegion,
+    public static func fetchChampionMastery(serverRegion: ServerRegion,
                               puuid: String,
                               championId: ChampionID,
                               request: Request) async throws -> ChampionMasteryDTO {
@@ -77,11 +77,7 @@ public class LOLAPIClient {
         return json
     }
 
-    func baseURL(for serverRegion: ServerRegion) -> String {
-        return "https://\(serverRegion.rawValue.lowercased()).api.riotgames.com"
-    }
-
-    func fetchChampions(request: Request) async throws -> ChampionsResponse {
+    public static func fetchChampions(request: Request) async throws -> ChampionsResponse {
         let requestURI: URI = "https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json"
         let response = try await request.client.get(requestURI)
         guard response.status.isValid() else {
@@ -89,5 +85,11 @@ public class LOLAPIClient {
         }
         let json = try response.content.decode(ChampionsResponse.self)
         return json
+    }
+    
+    // MARK: Helper methods
+    
+    private static func baseURL(for serverRegion: ServerRegion) -> String {
+        return "https://\(serverRegion.rawValue.lowercased()).api.riotgames.com"
     }
 }
