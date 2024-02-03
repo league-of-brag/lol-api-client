@@ -14,8 +14,8 @@ public class LOLAPIClient {
     
     /// See: https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerName
     public func fetchSummoner(serverRegion: ServerRegion,
-                                     summonerName: String,
-                                     request: Request) async throws -> SummonerDTO {
+                              summonerName: String,
+                              request: Request) async throws -> SummonerDTO {
         let baseURL = Self.baseURL(for: serverRegion)
         let requestURI: URI = "\(baseURL)/lol/summoner/v4/summoners/by-name/\(summonerName)"
         let response = try await request.client.get(requestURI) { req in
@@ -33,8 +33,8 @@ public class LOLAPIClient {
     
     /// See: https://developer.riotgames.com/apis#champion-mastery-v4/GET_getAllChampionMasteriesByPUUID
     public func fetchChampionMasteries(serverRegion: ServerRegion,
-                                              puuid: String,
-                                              request: Request) async throws -> [ChampionMasteryDTO] {
+                                       puuid: String,
+                                       request: Request) async throws -> [ChampionMasteryDTO] {
         let baseURL = Self.baseURL(for: serverRegion)
         let requestURI: URI = "\(baseURL)/lol/champion-mastery/v4/champion-masteries/by-puuid/\(puuid)"
         let response = try await request.client.get(requestURI) { req in
@@ -52,9 +52,9 @@ public class LOLAPIClient {
     
     /// See: https://developer.riotgames.com/apis#champion-mastery-v4/GET_getChampionMasteryByPUUID
     public func fetchChampionMastery(serverRegion: ServerRegion,
-                                            puuid: String,
-                                            championId: ChampionID,
-                                            request: Request) async throws -> ChampionMasteryDTO {
+                                     puuid: String,
+                                     championId: ChampionID,
+                                     request: Request) async throws -> ChampionMasteryDTO {
         let baseURL = Self.baseURL(for: serverRegion)
         let requestURI: URI = "\(baseURL)/lol/champion-mastery/v4/champion-masteries/by-puuid/\(puuid)/by-champion/\(championId)"
         let response = try await request.client.get(requestURI) { req in
