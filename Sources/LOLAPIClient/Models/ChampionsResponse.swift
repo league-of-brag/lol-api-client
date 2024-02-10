@@ -60,17 +60,35 @@ public struct ChampionDTO: Content {
     public let stats: [String: Double]
     
     public var imageURLFormattedName: String {
-        if let index: String.Index = name.firstIndex(of: "'") {
-            let nextIndex: String.Index = name.index(after: index)
-            let endIndex: String.Index = name.index(after: nextIndex)
-            let lowercasedCharacter: String = name[nextIndex].lowercased()
-            let emptyReplaceRange = index ..< nextIndex
-            let lowercaseRange = nextIndex ..< endIndex
+        if name == "Cho'Gath" {
+            return "Chogath"
+        }
+        else if name == "Kai'Sa" {
+            return "Kaisa"
+        }
+        else if name == "Vel'Koz" {
+            return "Velkoz"
+        }
+        else if name == "LeBlanc" {
+            return "Leblanc"
+        }
+        else if name == "Kha'Zix" {
+            return "Khazix"
+        }
+        else if name == "Wukong" {
+            return "MonkeyKing"
+        }
+        else if name == "Nunu & Willump" {
+            return "Nunu"
+        }
+        else if name == "Bel'Veth" {
+            return "Belveth"
+        }
+        else {
             return name
-                .replacingCharacters(in: lowercaseRange, with: lowercasedCharacter)
-                .replacingCharacters(in: emptyReplaceRange, with: "")
-        } else {
-            return name
+                .replacingOccurrences(of: "'", with: "")
+                .replacingOccurrences(of: ".", with: "")
+                .replacingOccurrences(of: " ", with: "")
         }
     }
     public var imageURL: URL {
