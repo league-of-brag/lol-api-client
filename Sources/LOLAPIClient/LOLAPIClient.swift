@@ -8,7 +8,7 @@ public class LOLAPIClient {
         return decoder
     }()
     
-    init(riotAPIToken: String) {
+    public init(riotAPIToken: String) {
         self.riotAPIToken = riotAPIToken
     }
     
