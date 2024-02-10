@@ -7,6 +7,7 @@ public class LOLAPIClient {
         decoder.dateDecodingStrategy = .millisecondsSince1970
         return decoder
     }()
+    let inMemoryCache: InMemoryCache = .init()
     
     public init(riotAPIToken: String) {
         self.riotAPIToken = riotAPIToken
@@ -72,11 +73,27 @@ public class LOLAPIClient {
     
     public func fetchChampions(request: Request) async throws -> ChampionsResponse {
         let requestURI: URI = "https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json"
-        let response = try await request.client.get(requestURI)
+        let response = try await request.client.get(requestURI) { req in
+            if let eTag = inMemoryCache.eTag(for: requestURI) {
+                req.headers.add(name: "If-None-Match", value: eTag)
+            }
+        }
         guard response.status.isValid() else {
             throw Abort(response.status)
         }
+        if response.status == .notModified {
+            guard let cachedItem = inMemoryCache.cachedItem(for: requestURI) as? FetchChampionsResponseCache else {
+                throw Abort(.internalServerError)
+            }
+            return cachedItem.response
+        }
         let json = try response.content.decode(ChampionsResponse.self)
+        if let eTag = response.headers.first(name: "ETag") {
+            let cachedItem = FetchChampionsResponseCache(requestURI: requestURI,
+                                                         eTag: eTag,
+                                                         response: json)
+            inMemoryCache.addCachedItem(cachedItem: cachedItem)
+        }
         return json
     }
     
